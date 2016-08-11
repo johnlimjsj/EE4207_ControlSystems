@@ -50,7 +50,7 @@ void setup() {
 void loop() {
   // put your main code here, to run repeatedly:
 digitalWrite( 9 , !(HIGH )); // set the Pin 9 as Low level
-delay( 1 );   // delay 1ms 
+//delay( 1 );   // delay 1ms 
 digitalWrite( 9 , !(LOW ));  // set the Pin 9 as High level
-delay( 3);   // delay 3 ms
+//delay( 3);   // delay 3 ms
 }
