@@ -51,10 +51,10 @@ void setup() {
 
 void loop() {
   
-  manualgraph();
+  manualGraph();
 }
 
-void manualgraph(){
+void manualGraph(){
   duty_cycle=0.3; //set frequency as 0.5
   PWM_SET(freq, duty_cycle);  
   delay(500);   // delay 1000 ms
@@ -63,21 +63,22 @@ void manualgraph(){
   delay(1000);   // delay 1000 ms
 }
 
-//void funnygraph(){
-//  duty_cycle = 0;
-//  increment = 0.2;
-//  while(){
-//    PWM_SET(freq, duty_cycle);  // Call PWM_SET subprogram
-//  
-//    if(duty_cycle >= 1){
-//      increment = -0.2;
-//    }
-//    if(duty_cycle <= 0){
-//      increment = 0.2;
-//    }
-//    duty_cycle += increment;
-//    Serial.println(duty_cycle);
-//    delay(500);
-//  }
-//}
+void stepGraph(){
+  duty_cycle = 0;
+  increment = 0.2;
+  while(1){
+    Serial.println(duty_cycle);
+    PWM_SET(freq, duty_cycle);  // Call PWM_SET subprogram
+  
+    if(duty_cycle >= 1){
+      increment = -0.2;
+    }
+    if(duty_cycle <= 0){
+      increment = 0.2;
+    }
+    duty_cycle += increment;
+    
+    delay(500);
+  }
+}
 
