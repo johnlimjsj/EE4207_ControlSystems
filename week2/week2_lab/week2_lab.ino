@@ -51,7 +51,7 @@ void setup() {
 
 void loop() {
   
-  manualGraph();
+  stepGraph();
 }
 
 void manualGraph(){
@@ -67,13 +67,13 @@ void stepGraph(){
   duty_cycle = 0;
   increment = 0.2;
   while(1){
-    Serial.println(duty_cycle);
+//    Serial.println(duty_cycle);
     PWM_SET(freq, duty_cycle);  // Call PWM_SET subprogram
   
     if(duty_cycle >= 1){
       increment = -0.2;
     }
-    if(duty_cycle <= 0){
+    if(duty_cycle <= 0.05){
       increment = 0.2;
     }
     duty_cycle += increment;
