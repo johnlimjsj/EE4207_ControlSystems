@@ -7,24 +7,38 @@ float kp, ki;
 float setPoint;
 float u0;
 float output;
-
+int timeInMs = 2000;
 
 void setup() {
+  
   manipulateRegisters();
-  setPID(1, 0);
-  setSetPoint(3.5);
-  setDutyCycle(4/9);
+  setPID(0.1, 0);
+  setu0(0.5);
+  Serial.println(u0);
 }
 
 
 void loop() {
-  output = 2*readReturnOutput(A0);
-  float dutyCycle = processPID(output);
-  Serial.println(dutyCycle);
-  PWM_SET(10000,dutyCycle);
- 
-  delay(500);
+
+  uint32_t start=millis();
+  setSetPoint(4);
+  while(millis() - start < timeInMs){
+    controlLoop();
+  }
+
+  start=millis();
+  setSetPoint(5);
+  while(millis() - start < timeInMs){
+    controlLoop();
+  }
+
 }
 
+
+void controlLoop(){
+  output = 2*readReturnOutput(A0);
+  float dutyCycle = processPID(output);
+  PWM_SET(10000,dutyCycle);
+}
 
 

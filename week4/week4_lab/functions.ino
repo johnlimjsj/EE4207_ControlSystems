@@ -44,13 +44,13 @@ void setSetPoint(float sp){
   setPoint = sp;
 }
 
-void setDutyCycle(float init_DutyCycle){
+void setu0(float init_DutyCycle){
   u0 = init_DutyCycle;
   Serial.print(u0);
 }
 
 float processPID(float output){
-  float error = (setPoint - output)/9.1;
+  float error = (setPoint - output);
   float corrected = kp*error;
   return corrected + u0;
 }
