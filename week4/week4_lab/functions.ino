@@ -8,19 +8,20 @@ void manualGraph(){
   delay(500);   // delay 1000 ms
 }
 
-void stepGraph(){
+void stepGraph(int delayTime, float stepSize){
   duty_cycle = 0;
-  increment = 0.2;
+  increment = stepSize;
   while(1){
     PWM_SET(freq, duty_cycle);  // Call PWM_SET subprogram
-    if(duty_cycle >= 1){increment = -0.2;}
-    if(duty_cycle <= 0.05){increment = 0.2; }
+    if(duty_cycle >= 1){increment = -stepSize;}
+    if(duty_cycle <= 0.0){increment = stepSize; }
     duty_cycle += increment;
-    delay(200);
+    delay(delayTime);
     PWM_SET(freq, 1);
-    delay(200);
+    delay(delayTime);
   }
 }
+
 
 float computeError(float output){
   return (setPoint - output);

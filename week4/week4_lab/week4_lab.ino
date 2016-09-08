@@ -13,7 +13,6 @@ float err_sum = 0;
 uint32_t start;
 
 void setup() {
-  
   setupRegisters();
   setPID(0.3, 0.01);
   setu0(4, 9.1);
@@ -22,14 +21,11 @@ void setup() {
 }
 
 void loop() {
-  
-//  setSetPoint(3.5);
-//  controlPidLoop();
-//
-//  setSetPoint(4.5);
-//  controlPidLoop();
- stepGraph();
+  setSetPoint(3.5);
+  controlPidLoop();
 
+  setSetPoint(4.5);
+  controlPidLoop();
 }
 
 inline void controlPidLoop(){
