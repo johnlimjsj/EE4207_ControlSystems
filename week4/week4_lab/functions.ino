@@ -1,35 +1,25 @@
 
 void manualGraph(){
-  duty_cycle=0.3; //set frequency as 0.5
+  duty_cycle=0.2; //set frequency as 0.5
   PWM_SET(freq, duty_cycle);  
   delay(500);   // delay 1000 ms
-  duty_cycle=0.99;
+  duty_cycle=0.8;
   PWM_SET(freq, duty_cycle);
-  delay(1000);   // delay 1000 ms
+  delay(500);   // delay 1000 ms
 }
 
 void stepGraph(){
   duty_cycle = 0;
   increment = 0.2;
   while(1){
-//    Serial.println(duty_cycle);
     PWM_SET(freq, duty_cycle);  // Call PWM_SET subprogram
-  
-    if(duty_cycle >= 1){
-      increment = -0.2;
-    }
-    if(duty_cycle <= 0.05){
-      increment = 0.2;
-    }
+    if(duty_cycle >= 1){increment = -0.2;}
+    if(duty_cycle <= 0.05){increment = 0.2; }
     duty_cycle += increment;
-    
-    delay(500);
+    delay(200);
+    PWM_SET(freq, 1);
+    delay(200);
   }
-}
-
-float readReturnOutput(int pinNum){
-  
-  return 5*((float)analogRead(pinNum))/1023;
 }
 
 float computeError(float output){
@@ -44,14 +34,12 @@ void setSetPoint(float sp){
   setPoint = sp;
 }
 
-void setu0(float init_DutyCycle){
-  u0 = init_DutyCycle;
+void setu0(float y0, float _K){
+  K = _K;
+  u0 = y0/_K;
   Serial.print(u0);
 }
 
-float processPID(float output){
-  float error = (setPoint - output);
-  float corrected = kp*error;
-  return corrected + u0;
-}
+
+
 

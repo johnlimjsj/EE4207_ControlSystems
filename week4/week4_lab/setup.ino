@@ -1,4 +1,4 @@
-void manipulateRegisters(){
+inline void setupRegisters(){
    Serial.begin(9600);
    // Turn off the timer while we make changes
   TCCR1B = TCCR1B & ~ ((1 << CS12) | (1 << CS11) | (1 << CS10));   // Timer/Counter Control Registers (TCCR1A/B);  CS: Clock Select
