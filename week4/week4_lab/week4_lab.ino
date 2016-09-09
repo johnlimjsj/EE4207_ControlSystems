@@ -1,6 +1,6 @@
 #define TIMEINMS 500
 
-int freq = 10000;
+int freq = 30000;
 float duty_cycle = 0;
 int value_temp;
 float increment;
@@ -9,23 +9,24 @@ float kp, ki;
 float setPoint;
 float u0, K;
 float output;
-float err_sum = 0;
+float err_sum = 0, error;
 uint32_t start;
 
 void setup() {
   setupRegisters();
-  setPID(0.3, 0.01);
+  setPID(1.10, 0.01);
   setu0(4, 9.1);
-  setSetPoint(3.5);
   PWM_SET(10000,u0);
+  delay(1000);
 }
 
 void loop() {
-  setSetPoint(3.5);
+  setSetPoint(3.35);
   controlPidLoop();
 
-  setSetPoint(4.5);
+  setSetPoint(4.35);
   controlPidLoop();
+//stepGraph(300, 0.2);
 }
 
 inline void controlPidLoop(){
@@ -38,10 +39,34 @@ inline void controlPidLoop(){
 
 inline float processOutAndPID(int pinNum){
   float output = 10*((float)analogRead(pinNum))/1023;
-  float error = (setPoint - output);
+  error = (setPoint - output);
   err_sum += error;
   float delta_u = (kp*error + ki*err_sum)/K;
   return delta_u + output/K;
+}
+
+
+void manualGraph(){
+  duty_cycle=0.2; //set frequency as 0.5
+  PWM_SET(freq, duty_cycle);  
+  delay(500);   // delay 1000 ms
+  duty_cycle=0.8;
+  PWM_SET(freq, duty_cycle);
+  delay(500);   // delay 1000 ms
+}
+
+void stepGraph(int delayTime, float stepSize){
+  duty_cycle = 0;
+  increment = stepSize;
+  while(1){
+    PWM_SET(freq, duty_cycle);  // Call PWM_SET subprogram
+    if(duty_cycle >= 1){increment = -stepSize;}
+    if(duty_cycle <= 0.0){increment = stepSize; }
+    duty_cycle += increment;
+    delay(delayTime);
+    PWM_SET(freq, 1);
+    delay(delayTime);
+  }
 }
 
 
