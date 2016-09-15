@@ -9,24 +9,25 @@ float kp, ki;
 float setPoint;
 float u0, K;
 float output;
-float err_sum = 0, error;
+float err_sum = 0, error, prev_error, delta_u, prev_u=0,  u;
 uint32_t start;
 
 void setup() {
   setupRegisters();
-  setPID(1.10, 0.01);
+  setPID(0.60, 0.03);
   setu0(4, 9.1);
   PWM_SET(10000,u0);
   delay(1000);
+  u=u0;
 }
 
 void loop() {
-  setSetPoint(3.35);
+  setSetPoint(3.5);
   controlPidLoop();
 
-  setSetPoint(4.35);
+  setSetPoint(4.5);
   controlPidLoop();
-//stepGraph(300, 0.2);
+
 }
 
 inline void controlPidLoop(){
@@ -41,8 +42,12 @@ inline float processOutAndPID(int pinNum){
   float output = 10*((float)analogRead(pinNum))/1023;
   error = (setPoint - output);
   err_sum += error;
-  float delta_u = (kp*error + ki*err_sum)/K;
-  return delta_u + output/K;
+  delta_u = (kp*error + ki*err_sum)/K;
+  u = delta_u + u0;
+  if(u>1){ u=1; }
+  if(u<0){ u=0; }
+  prev_u = u;
+  return u;
 }
 
 
